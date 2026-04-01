@@ -1,0 +1,21 @@
+{{!
+    Question list with optional bullet options (quiz / H5P export).
+
+    @template local_dixeo_pdfexport/module_question_items
+
+    Example context (json):
+    {
+        "items": [
+            {
+                "title": "Question 1",
+                "text": "What is 2+2?",
+                "hasoptions": true,
+                "options": ["3", "4", "5"]
+            }
+        ],
+        "nooptionslabel": "No options available."
+    }
+}}
+<div style="font-family: Arial, sans-serif; margin: 10px;">
+{{#items}}<div style="margin: 0 0 6px 0;"><p style="margin: 0 0 2px 0;"><strong>{{title}}:</strong> {{text}}</p>{{#hasoptions}}<ul style="list-style-type: none; margin: 0; padding-left: 0;">{{#options}}<li style="margin: 0; padding: 0;">&#8226; {{.}}</li>{{/options}}</ul>{{/hasoptions}}{{^hasoptions}}<p style="margin: 0;"><em>{{nooptionslabel}}</em></p>{{/hasoptions}}</div>{{/items}}
+</div>

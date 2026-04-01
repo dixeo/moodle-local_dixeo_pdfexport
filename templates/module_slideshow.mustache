@@ -1,0 +1,24 @@
+{{!
+    Slideshow slides wrapper for PDF export.
+
+    @template local_dixeo_pdfexport/module_slideshow
+
+    Example context (json):
+    {
+        "slides": [
+            {
+                "contenthtml": "<p>Slide body</p>"
+            }
+        ]
+    }
+}}
+<div style="height: 8px; line-height: 8px;">&nbsp;</div>
+<div class="slideshow">
+    <div class="slides">
+        {{#slides}}
+            <div class="slide">
+                <div>{{{contenthtml}}}</div>
+            </div>
+        {{/slides}}
+    </div>
+</div>

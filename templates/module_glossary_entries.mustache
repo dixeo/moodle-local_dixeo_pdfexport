@@ -1,0 +1,21 @@
+{{!
+    Glossary entries for PDF export.
+
+    @template local_dixeo_pdfexport/module_glossary_entries
+
+    Example context (json):
+    {
+        "entries": [
+            {
+                "concept": "Term",
+                "definitionhtml": "<p>Definition text.</p>"
+            }
+        ]
+    }
+}}
+<div>
+    {{#entries}}
+        <h3>{{concept}}</h3>
+        <div>{{{definitionhtml}}}</div>
+    {{/entries}}
+</div>
