@@ -37,6 +37,6 @@ $string['missingh5ppackage'] = 'Missing H5P package file for this activity.';
 $string['nooptionsavailable'] = 'No options available.';
 $string['pdfexport'] = 'PDF Export';
 $string['pluginname'] = 'Dixeo PDF Export';
-$string['privacy:metadata'] = 'The local_dixeo_pdfexport plugin does not store any personal data.';
+$string['privacy:metadata'] = 'The local_dixeo_pdfexport plugin does not store any personal data in Moodle. PDF exports may include course titles and editing teacher names derived from existing course data at the time of export.';
 $string['publishedby'] = 'Published by';
 $string['scantoenrol'] = 'Scan to enrol';

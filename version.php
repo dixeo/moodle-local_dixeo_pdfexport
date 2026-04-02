@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_dixeo_pdfexport';
-$plugin->version = 2026040100;
-$plugin->requires = 2022112800;
+$plugin->version = 2026040205;                  // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires = 2023100900;                 // Moodle 4.3 (Build: 20231009) minimum.
+$plugin->component = 'local_dixeo_pdfexport';   // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = '1.0.0';

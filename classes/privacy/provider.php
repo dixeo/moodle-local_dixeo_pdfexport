@@ -25,12 +25,15 @@
 namespace local_dixeo_pdfexport\privacy;
 
 /**
- * Declares that this plugin stores no personal data.
+ * Declares that this plugin does not persist personal data in its own storage.
+ *
+ * PDFs are generated on demand and streamed to the user; content is assembled from
+ * course and activity data already held elsewhere in Moodle.
  */
 class provider implements
     \core_privacy\local\metadata\null_provider {
     /**
-     * Explain why this plugin has no personal data.
+     * Explain why this plugin has no stored personal data in plugin tables.
      *
      * @return string
      */

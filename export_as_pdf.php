@@ -36,6 +36,11 @@ $PAGE->set_url(new moodle_url('/local/dixeo_pdfexport/export_as_pdf.php', ['cour
 try {
     $service = new \local_dixeo_pdfexport\local\service\course_pdf_export_service($DB);
     $filepath = $service->export($courseid);
+    register_shutdown_function(static function () use ($filepath): void {
+        if (is_string($filepath) && is_readable($filepath)) {
+            unlink($filepath);
+        }
+    });
     send_file(
         $filepath,
         time() . '_course_' . $courseid . '.pdf',
