@@ -14,11 +14,14 @@
 }}
 <div style="height: 8px; line-height: 8px;">&nbsp;</div>
 <div class="slideshow">
+    {{! One table: TCPDF applies table padding as cell inset. Row gaps use border-spacing only if cellspacing is omitted (cellspacing="0" blocks border-spacing). }}
     <div class="slides">
-        {{#slides}}
-            <div class="slide">
-                <div>{{{contenthtml}}}</div>
-            </div>
-        {{/slides}}
+        <table class="slide" width="100%" style="width:100%;border-collapse:separate;border-spacing:0 22px;padding:14px 32px;">
+            {{#slides}}
+            <tr style="page-break-inside:avoid;">
+                <td style="border:2px solid #cecece;">{{{contenthtml}}}</td>
+            </tr>
+            {{/slides}}
+        </table>
     </div>
 </div>

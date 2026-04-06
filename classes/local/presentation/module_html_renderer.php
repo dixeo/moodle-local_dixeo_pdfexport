@@ -78,8 +78,10 @@ class module_html_renderer {
             'slides' => $slides,
         ]);
         // PDF/slideshow layout rules (kept in PHP: <style> in .mustache fails Mustache HTML validation).
+        // Slides are one column, one row per slide: table CSS padding → cell_padding; border-spacing → vertical gap
+        // between rows (do not set cellspacing on that table or TCPDF skips border-spacing for row spacing).
         $style = '<style>.slideshow .pexels-credits{display:block !important;clear:both !important;}' .
-            '.slideshow .slide p{display:block !important;clear:both !important;}</style>';
+            '.slideshow table.slide td p{display:block !important;clear:both !important;}</style>';
         return $style . $html;
     }
 }

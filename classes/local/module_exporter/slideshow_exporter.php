@@ -58,7 +58,15 @@ class slideshow_exporter implements module_exporter_interface {
         $slides = $db->get_records('slideshow_slide', ['slideshow' => $instance->id], 'sortorder ASC');
         $templateslides = [];
         foreach ($slides as $slide) {
-            $content = format_text($slide->content, $slide->contentformat, [
+            $content = file_rewrite_pluginfile_urls(
+                $slide->content,
+                'pluginfile.php',
+                $context->id,
+                'mod_slideshow',
+                'content',
+                (int) $slide->id
+            );
+            $content = format_text($content, $slide->contentformat, [
                 'context' => $context,
                 'trusted' => true,
                 'filter' => true,

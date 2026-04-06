@@ -53,7 +53,9 @@ class html_normalizer {
         $dom = $this->load_dom($html);
         $this->remove_math_tex_scripts($dom);
         $this->fix_relative_units($dom->documentElement, 15, 15);
-        return $dom->saveHTML();
+        $html = $dom->saveHTML();
+        // TCPDF fetches <img src> via HTTP; pluginfile URLs return the login page without a session.
+        return pluginfile_tcpdf_images::embed_in_html($html);
     }
 
     /**
