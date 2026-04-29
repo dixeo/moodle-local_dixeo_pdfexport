@@ -57,6 +57,8 @@ class pluginfile_tcpdf_images {
     }
 
     /**
+     * Converts an image src into TCPDF inline image data.
+     *
      * @param string $src Raw img src attribute value.
      * @return string|null Inline src or null to leave unchanged.
      */
@@ -69,7 +71,7 @@ class pluginfile_tcpdf_images {
         if ($src[0] === '@') {
             return null;
         }
-        // data: URLs are handled by TCPDF; leave them (DOM may have kept them intact).
+        // Data URLs are handled by TCPDF; leave them (DOM may have kept them intact).
         if (strncasecmp($src, 'data:', 5) === 0) {
             return null;
         }
@@ -96,42 +98,42 @@ class pluginfile_tcpdf_images {
      * @return string|null e.g. /10/mod_slideshow/content/3/image.png
      */
     private static function pluginfile_src_to_storage_fullpath(string $src): ?string {
-        // tokenpluginfile.php contains the substring "pluginfile.php" — check token URLs first.
+        // Token URLs contain the substring "pluginfile.php", so check token URLs first.
         if (stripos($src, 'tokenpluginfile.php') !== false) {
-            if (preg_match(
-                '/tokenpluginfile\.php\/[^\/]+\/(?<context>\d+)\/(?<component>[^\/]+)\/(?<filearea>[^\/]+)\/(?:(?<itemid>\d+)\/)?(?<path>[^?#]+)/i',
-                $src,
-                $args
-            )) {
+            $tokenpattern =
+                '/tokenpluginfile\.php\/[^\/]+\/(?<context>\d+)\/(?<component>[^\/]+)\/'
+                . '(?<filearea>[^\/]+)\/(?:(?<itemid>\d+)\/)?(?<path>[^?#]+)/i';
+            $tokenmatched = preg_match($tokenpattern, $src, $args);
+            if ($tokenmatched) {
                 return self::build_fullpath_from_regex_groups($args);
             }
         }
 
-        // Slash-argument: …/pluginfile.php/ctx/comp/area/(itemid/)path (not webservice/ — rare in body HTML).
+        // Slash-argument form: .../pluginfile.php/ctx/comp/area/(itemid/)path.
         if (stripos($src, 'pluginfile.php') !== false) {
             $pos = stripos($src, 'pluginfile.php');
             $from = substr($src, $pos);
-            if (preg_match(
-                '/^pluginfile\.php\/(?<context>\d+)\/(?<component>[^\/]+)\/(?<filearea>[^\/]+)\/(?:(?<itemid>\d+)\/)?(?<path>[^?#]+)/iu',
-                $from,
-                $args
-            )) {
+            $slashpattern =
+                '/^pluginfile\.php\/(?<context>\d+)\/(?<component>[^\/]+)\/(?<filearea>[^\/]+)\/'
+                . '(?:(?<itemid>\d+)\/)?(?<path>[^?#]+)/iu';
+            $slashmatched = preg_match($slashpattern, $from, $args);
+            if ($slashmatched) {
                 return self::build_fullpath_from_regex_groups($args);
             }
         }
 
-        // Query form: pluginfile.php?file=/ctx/comp/area/itemid/path
+        // Query form: pluginfile.php?file=/ctx/comp/area/itemid/path.
         $decoded = html_entity_decode($src, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $query = parse_url($decoded, PHP_URL_QUERY);
         if (is_string($query) && $query !== '') {
             parse_str($query, $params);
             if (!empty($params['file']) && is_string($params['file'])) {
                 $file = urldecode($params['file']);
-                if (preg_match(
-                    '/^\/(?<context>\d+)\/(?<component>[^\/]+)\/(?<filearea>[^\/]+)\/(?:(?<itemid>\d+)\/)?(?<path>.+)$/u',
-                    $file,
-                    $args
-                )) {
+                $querypattern =
+                    '/^\/(?<context>\d+)\/(?<component>[^\/]+)\/(?<filearea>[^\/]+)\/'
+                    . '(?:(?<itemid>\d+)\/)?(?<path>.+)$/u';
+                $querymatched = preg_match($querypattern, $file, $args);
+                if ($querymatched) {
                     return self::build_fullpath_from_regex_groups($args);
                 }
             }
@@ -141,7 +143,10 @@ class pluginfile_tcpdf_images {
     }
 
     /**
-     * @param array<string,string> $args Named capture groups from preg_match.
+     * Builds Moodle file storage fullpath from regex groups.
+     *
+     * @param array $args Named capture groups from preg_match.
+     * @return string
      */
     private static function build_fullpath_from_regex_groups(array $args): string {
         $context = $args['context'];

@@ -88,3 +88,33 @@ function local_dixeo_pdfexport_add_button_to_social_menu($page): array {
         ],
     ]];
 }
+
+/**
+ * Dixeo teacher toolbar integration (PDF export).
+ *
+ * @param \moodle_page $page
+ * @return array<int, array<string, mixed>>
+ */
+function local_dixeo_pdfexport_add_button_to_teacher_toolbar($page): array {
+    if (!str_contains($page->url->get_path(), '/course/view.php')) {
+        return [];
+    }
+    if (empty($page->course->id) || !has_capability('moodle/course:manageactivities', $page->context)) {
+        return [];
+    }
+
+    $text = get_string('exporttopdf', 'local_dixeo_pdfexport');
+    $url = (new \moodle_url('/local/dixeo_pdfexport/export_as_pdf.php', ['courseid' => $page->course->id]))->out(false);
+
+    return [[
+        'key' => 'pdf',
+        'icon' => 'pdf',
+        'label' => $text,
+        'title' => $text,
+        'ismobileoverflow' => true,
+        'islink' => true,
+        'isdisabled' => false,
+        'url' => $url,
+        'linktarget' => '_blank',
+    ]];
+}
